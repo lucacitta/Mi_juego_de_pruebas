@@ -15,7 +15,6 @@ efectos=['vida+','vida-','armadura+','armadura-','danio+', 'danio-','agilidad+',
 
 
 
-
 def generadorEquipamiento(heroe):
     try:
         lista=['espadas', 'armaduras', 'anillos']
@@ -49,6 +48,7 @@ def equipar(heroe, equipando):
 
 
 def generadorEnemigos(tipo):
+    clase='vacio'
     if tipo=='debil':
         try:
             clase=r.choice(enemigosDebiles)
@@ -81,6 +81,8 @@ def generadorEnemigos(tipo):
                 clase=r.choice(enemigosFuertes)
                 eleccion=r.choice(clase)
                 clase.remove(eleccion)
+    elif tipo == 'boss':
+        eleccion=r.choice(enemigosBoses)
     if clase == troll:
         clase='troll'
     elif clase == esqueleto:
@@ -93,6 +95,12 @@ def generadorEnemigos(tipo):
         clase='gigante'
     elif clase == mago:
         clase='mago'
+    if eleccion =='Dragon Anciano':
+        clase='dragon'
+    elif eleccion == 'Ogro de roca':
+        clase='ogroPiedra'
+    elif eleccion =='Ninja antiguo jackie chan':
+        clase='ninja'
     else:
         print(f"No entro en ninguna clase: {clase}")
     enemigo=eleccion
@@ -108,9 +116,10 @@ def pelea(heroe, enemigo):
         print(f'{heroe.nombre}                  {enemigo.nombre}\nHP: {heroe.vida}/{heroe.vidaMaxima}           HP: {enemigo.vida}/{enemigo.vidaMaxima}')
         print(f'Daño: {heroe.danio}              Daño: {enemigo.danio}\nArmadura: {heroe.armadura}          Armadura: {enemigo.armadura}')
         print(f'Agilidad: {heroe.agilidad}          Agilidad: {enemigo.agilidad}\n\n')
-        opcion=int(input("Que vas a hacer?\n Atacar(1)\n Pocion(2)\n Intentar huir(3)\n Tu decision: "))
+        opcion=input("Que vas a hacer?\n Atacar(1)\n Pocion(2)\n Intentar huir(3)\n Tu decision: ")
+        opcion=verificar("numero",opcion,3)
         system('cls')
-        if opcion == 1:
+        if opcion == '1':
             if auxAgilidadHeroe > auxAgilidadEnemigo:
                 aux = ((auxAgilidadHeroe-auxAgilidadEnemigo)/100)
                 if (0.5+aux)>r.random():
@@ -128,16 +137,21 @@ def pelea(heroe, enemigo):
                     ataque(heroe=heroe,enemigo=enemigo, atacando=0)
                 else:
                     ataque(enemigo=enemigo,heroe=heroe, atacando=1)
-        if opcion==2:
+        if opcion=='2':
             aux=heroe.UsarPocion()
             if aux == 0:
                 ataque(enemigo=enemigo, heroe=heroe, atacando=2)
-        if opcion==3:
+        if opcion=='3':
             escape=(heroe.agilidad-enemigo.agilidad)/100
             if (0.5+escape)<r.random():
                 escp=True
             else:
+                print('Intentas escaparte, pero eres alcanzado por el enemigo')
                 ataque(enemigo=enemigo, heroe=heroe, atacando=3)
+        if heroe.agilidad>=enemigo.agilidad*2 and opcion=='1':
+            ataque(heroe=heroe,enemigo=enemigo, atacando=4)
+        elif enemigo.agilidad>=heroe.agilidad*2 and opcion=='1':
+            ataque(enemigo=enemigo, heroe=heroe, atacando=5)
         if escp==True:
             print(f'\nTe logras escapar de {enemigo.nombre}')
         elif heroe.vida <= 0:
@@ -145,10 +159,8 @@ def pelea(heroe, enemigo):
         elif enemigo.vida <= 0:
             print(f"\nGanaste la pelea contra {enemigo.nombre}")
             drop(heroe=heroe, enemigo=enemigo)
-        elif heroe.agilidad>=enemigo.agilidad*2:
-            ataque(heroe=heroe,enemigo=enemigo, atacando=4)
-        elif enemigo.agilidad>=heroe.agilidad*2:
-            ataque(enemigo=enemigo, heroe=heroe, atacando=5)
+
+
 
 
 def ataque(heroe, enemigo, atacando):
@@ -266,10 +278,11 @@ def Caminos(heroe):
             opcion1=opcion
         else:
             opcion2=opcion
-    eleccionCamino=int(input('Elija por cual camino desea avanzar(1/2): '))
-    if eleccionCamino==1:
+    eleccionCamino=input('Elija por cual camino desea avanzar(1/2): ')
+    eleccionCamino=verificar('numero',eleccionCamino,2)
+    if eleccionCamino=='1':
         opcion=opcion1
-    elif eleccionCamino==2:
+    elif eleccionCamino=='2':
         opcion=opcion2
     system('cls')
     if opcion=='pelea':
@@ -288,7 +301,7 @@ def Caminos(heroe):
         heroe.pociones=heroe.pocionesMaximas
     elif opcion=='mercader':
         mercader(heroe)
-    enter=input('Continuar...')
+    enter()
     system('cls')
 
 def generadorCofre(seleccionado, tipos, heroe):
@@ -300,10 +313,11 @@ def generadorCofre(seleccionado, tipos, heroe):
     else:
         print(f" Armadura: {seleccionado.armadura}\n Agilidad: {seleccionado.agilidad}\n Vida: {seleccionado.vida}\n Daño: {seleccionado.danio}")
     eleccion= input(('deseas equiparlo? (y/n): '))
-    if eleccion == 'y' or eleccion == 'Y':
+    eleccion=verificar('y/n',eleccion)
+    if eleccion == True:
         equipando=seleccionado
         equipar(heroe=heroe, equipando=equipando)
-    elif eleccion=='n' or eleccion == 'N':
+    elif eleccion==False:
         print(f'Descartas {seleccionado.nombreEquipamiento} y sigues tu camino')
 
 def mercader(heroe):
@@ -322,8 +336,10 @@ def mercader(heroe):
             f'Vida: 0                        Vida: {opcion2.vida}                      Vida: {opcion3.vida}\n'
             f'Daño: {opcion1.danio}                       Daño: 0                       Daño: {opcion3.danio}\n'
             )
-        eleccion=int(input(f'Si deseas y puedes comprar alguna pieza de equipamiento elige (1/2/3) o si no deseas comprar nada (4)\nOro actual={heroe.oro}\nTu respuesta: '))
-        if eleccion==1:
+        eleccion=input(f'Si deseas y puedes comprar alguna pieza de equipamiento elige (1/2/3) o si no deseas comprar nada (4)\nOro actual={heroe.oro}\nTu respuesta: ')
+        eleccion=verificar('numero',eleccion,4)
+        print('\n')
+        if eleccion=='1':
             if comprado1==True:
                 print('Ya has comprado este objeto')
                 alcanzo=False
@@ -336,8 +352,8 @@ def mercader(heroe):
                     alcanzo=True
                 else:
                     print(f'No tienes el dinero suficiente para comprar {opcion1.nombreEquipamiento}')
-                    enter=input('Continuar...')
-        elif eleccion==2:
+                    enter()
+        elif eleccion=='2':
             if comprado2==True:
                 print('Ya has comprado este objeto')
                 alcanzo=False
@@ -350,8 +366,8 @@ def mercader(heroe):
                     alcanzo=True
                 else:
                     print(f'No tienes el dinero suficiente para comprar {opcion2.nombreEquipamiento}')
-                    enter=input('Continuar...')
-        elif eleccion==3:
+                    enter()
+        elif eleccion=='3':
             if comprado3==True:
                 print('Ya has comprado este objeto')
                 alcanzo=False
@@ -364,16 +380,19 @@ def mercader(heroe):
                     alcanzo=True
                 else:
                     print(f'No tienes el dinero suficiente para comprar {opcion3.nombreEquipamiento}')
-                    enter=input('Continuar...')
-        elif eleccion==4:
+                    enter()
+        elif eleccion=='4':
             alcanzo==True
+            continue
         seguir=input('Desea seguir comprando? (y/n)\nSu respuesta: ')
-        if seguir == 'y' or seguir == 'Y':
+        seguir=verificar('y/n',seguir)
+        if seguir==True:
             alcanzo=False
-        elif seguir=='n' or seguir=='Y':
+        elif seguir==False:
             alcanzo=True
         system('cls')
     print('Saludas con desconfianza al extraño mercader y sigues tu camino')
+
 
 
 def generadorEvento(heroe):
@@ -394,73 +413,71 @@ def generadorEvento(heroe):
 
 def eventoHerrero(heroe):
     print('Ves una casa a lo lejos, al acercarte te das cuenta que se trata del hogar de un herrero')
-    enter=input('Continuar...')
+    enter()
     print('Al llegar a la casa ves a un herrero trabajando que al ver tu equipamiento te observa y dice\n')
     print('* Deberia darte verguenza el estado de tus armas y armadura, por un modico precio podria arreglarlas*\n')
     alcanza=False
     while alcanza==False:
-        seleccion=int(input(f'Elije que deseas hacer (Tienens {heroe.oro} monedas)\nAfilar armas Coste:10 monedas (1)\nReforzar armadura Coste:10 monedas (2)\nMejorar ambas coste:18 monedas (3)\nNo contratar sus servicios (4)\nTu respuesta: '))
-        if seleccion==1:
+        seleccion=input(f'Elije que deseas hacer (Tienes {heroe.oro} monedas)\nAfilar armas Coste:10 monedas (1)\nReforzar armadura Coste:10 monedas (2)\nMejorar ambas coste:18 monedas (3)\nNo contratar sus servicios (4)\nTu respuesta: ')
+        seleccion=verificar('numero',seleccion,4)
+        if seleccion=='1':
             if heroe.oro>=10:
                 heroe.danioExtra+=20
-                print('El herrero afila amablemente tus armas y luego le entregas su paga.\nFinalmente, agradeces y sigues tu camino')
+                print('El herrero afila amablemente tus armas y luego le entregas su paga (Daño +20).\nFinalmente, agradeces y sigues tu camino')
                 heroe.oro-=10
                 alcanza=True
             else:
                 print('No tienes el oro suficiente')
-        elif seleccion==2:
+        elif seleccion=='2':
             if heroe.oro>=10:
                 heroe.armaduraExtra+=30
-                print('El herrero refuerza amablemente tu armadura y luego le entregas su paga.\nFinalmente, agradeces y sigues tu camino')
+                print('El herrero refuerza amablemente tu armadura y luego le entregas su paga (Armadura +30).\nFinalmente, agradeces y sigues tu camino')
                 heroe.oro-=10
                 alcanza=True
             else:
                 print('No tienes el oro suficiente')
-        elif seleccion==3:
+        elif seleccion=='3':
             if heroe.oro>=18:
                 heroe.danioExtra+=20
                 heroe.armaduraExtra+=30
-                print('El herrero mejora ambas partes de tu equipamiento y luego le entregas su paga.\nFinalmente, agradeces y sigues tu camino')
+                print('El herrero mejora ambas partes de tu equipamiento y luego le entregas su paga (Daño +20--Armadura +30).\nFinalmente, agradeces y sigues tu camino')
                 heroe.oro-=18
                 alcanza=True
             else:
                 print('No tienes el oro suficiente')
-        elif seleccion==4:
+        elif seleccion=='4':
             alcanza=True
             print('Le dices al herrero que no solicitaras sus servicios y sigues tu camino mientras te observa con una mirada sobradora')
 
 def eventoVidaPorEquipamiento(heroe):
     print('Encuentras una antigua fuente de una mujer, arrodillada con un caliz en sus manos y una inscripcion en idioma antiguo')
-    enter=input('Continuar...')
-    print('Al acercarte y ponerte tus lentes, lees el mensaje y lo traduces en algo como "Entregadme lo importante de la vida" ')
-    eleccion=int(input('Piensas en el acertijo y se te ocurren varias soluciones\nLa familia *Ofrecer sangre* (1)\nLa salud *Verter una pocion* (2)\nNo hacer nada (3)\nTu decision: '))
-    if eleccion==1:
+    enter()
+    print('Al acercarte y ponerte tus lentes, lees el mensaje y lo traduces en algo como "Vuestra sangre sera recompensada" ')
+    eleccion=input('Deseas arriesgarte y entregar un poco de tu sangre? (y/n)\nTu decision: ')
+    eleccion=verificar('y/n',eleccion)
+    if eleccion==True:
         heroe.vida-=(heroe.vida/5)
         objeto, tipo = generadorEquipamiento(heroe)
         print('Realizas un corte en tu mano y se escucha un sonido extraño')
-        enter=input('Continuar...')
         print(f'La estatua se parte en dos y encuentras {objeto.nombreEquipamiento}')
+        enter()
         equipar(heroe,objeto)
         print('Luego sigues tu camino')
-    elif eleccion ==2:
-        heroe.pociones-= 1
-        print('Viertes el contenido de uno de tus viales de pociones en el caliz')
-        enter=input('Continuar...')
-        print('Sin embargo, nada sucede y decides seguir tu camino')
-    elif eleccion==3:
+    elif eleccion==False:
         print('Decides no arriesgarte y sigues tu camino')
 
 def eventoStats(heroe):
-    opcion=input('Encuentras un caldero con restos de una pocion, podria ser beneficiosa o maligna(y/n)\nTu Respuesta:')
-    if opcion=='y' or opcion=='Y':
+    opcion=input('Encuentras un caldero con restos de una pocion, podria ser beneficiosa o maligna, deseas beberla? (y/n)\nTu Respuesta:')
+    opcion=verificar('y/n',opcion)
+    if opcion==True:
         azar=r.choice(efectos)
         efectos.remove(azar)
         if azar=='vida+':
                 heroe.vidaExtra+=50
                 print('Tomas los restos de la pocion y te sientes rejuvenecido (Vida Maxima +50)\nLuego sigues tu camino')
         elif azar=='danio+':
-                heroe.danioExtra+=20
-                print('Tomas los restos de la pocion y te sientes poderoso (Danio + 20) \nLuego sigues tu camino')
+                heroe.danioExtra+=10
+                print('Tomas los restos de la pocion y te sientes poderoso (Danio + 10) \nLuego sigues tu camino')
         elif azar=='armadura+':
                 heroe.armaduraExtra+=30
                 print('Tomas los restos de la pocion y te sientes poderoso, como si aguantases mas (Armadura + 30) \nLuego sigues tu camino')
@@ -471,28 +488,28 @@ def eventoStats(heroe):
                 heroe.vidaExtra-=50
                 print('Tomas los restos de la pocion y te sientes que te arde el estomago, no parece haber sido buena idea (Vida Maxima -50)\nLuego sigues tu camino')
         elif azar=='danio-':
-                heroe.danioExtra-=20
-                print('Tomas los restos de la pocion y sientes con poca fuerza, casi no puedes levantar tu espada (Danio - 20) \nLuego sigues tu camino')
+                heroe.danioExtra-=10
+                print('Tomas los restos de la pocion y te sientes con poca fuerza, casi no puedes levantar tu espada (Danio - 10) \nLuego sigues tu camino')
         elif azar=='armadura-':
                 heroe.armaduraExtra-=30
                 print('Tomas los restos de la pocion y te sientes debil, como si estuvieras enfermo (Armadura - 30) \nLuego sigues tu camino')
         elif azar=='agilidad+':
                 heroe.agilidadExtra-30
                 print('Tomas los restos de la pocion y te sientes pesado, casi como si salieras de un tenedor libre (Agilidad - 30) \nLuego sigues tu camino')
-
-    elif opcion=='n' or opcion=='N':
+    elif opcion==False:
         print('Decides no arriesgarte a tomar una pocion que no conoces y sigues tu camino')
 
 def eventoElegirEquipamiento(heroe):
     opcion1, tipo1=generadorEquipamiento(heroe)
     opcion2, tipo2=generadorEquipamiento(heroe)
     print('Ves la estatua de un angel, observas que en cada una de sus manos tiene un equipamiento')
-    enter=input('Continuar...')
-    eleccion=int(input(f'En su mano izquierda ves {opcion1.nombreEquipamiento}(1) y en su mano derecha {opcion2.nombreEquipamiento}(2), cual deseas recoger? (1/2): '))
-    if eleccion==1:
+    enter()
+    eleccion=input(f'En su mano izquierda ves {opcion1.nombreEquipamiento}(1) y en su mano derecha {opcion2.nombreEquipamiento}(2), cual deseas recoger? (1/2): ')
+    eleccion=verificar('numero',eleccion,2)
+    if eleccion=='1':
         print(f'Al recoger {opcion1.nombreEquipamiento}, ves como el angel cierra su otra mano, impidiendote obtener {opcion2.nombreEquipamiento}')
         equipar(heroe,opcion1)
-    elif eleccion==2:
+    elif eleccion=='2':
         print(f'Al recoger {opcion2.nombreEquipamiento}, ves como el angel cierra su otra mano, impidiendote obtener {opcion1.nombreEquipamiento}')
         equipar(heroe,opcion2)
 
@@ -500,7 +517,7 @@ def eventoLastimarse(heroe):
     azar=r.random()
     if azar<=0.25:
         print('Activas una trampa y una flecha te impacta en tu brazo izquierdo')
-        enter=input('Continuar...')
+        enter()
         print(f'Logras quitarla, pero perdiste bastante sangre (vida - {int(heroe.vida/4)})')
         heroe.vida-=int(heroe.vida/4)
     elif azar>0.25 and azar<=0.5:
@@ -515,15 +532,49 @@ def eventoLastimarse(heroe):
 
 def eventoPociones(heroe):
     print('Ves un anciano a lo lejos y decides acercarte a el')
-    enter=input('Continuar...')
+    enter()
     print('Al llegar te das cuenta que es Tusam, el gran mago\nEl te mira con una sonrisa y decide hacerte un regalo')
-    regalo=int(input('Puedes elegir entre llevar una pocion extra (1), o aumentar su efecto curativo(2)\nQue decides?(1/2) '))
-    if regalo==1:
+    regalo=input('Puedes elegir entre llevar una pocion extra (1), o aumentar su efecto curativo(2)\nQue decides?(1/2) ')
+    regalo=verificar('numero',regalo,2)
+    if regalo=='1':
         heroe.pociones+=1
         heroe.pocionesMaximas+=1
         print(f'Tusam asiente, ahora puedes llevar {heroe.pocionesMaximas} pociones, tienes {heroe.pociones} llenas')
-    elif regalo==2:
+    elif regalo=='2':
         heroe.pocionesCuracion+=40
         print(f'Tusam asiente, ahora tus pociones regeneran {heroe.pocionesCuracion}')
 
+
+def inicio():
+    nombre = input("Como te llamaras?: ")
+    nombre=verificar('nombre',nombre)
+    system('cls')
+    eleccion = input("Seleccione su clase:\n\n"
+    "Soldado (1)                                Tanque (2)                            Asesino (3)\n"
+    "Vida inicial=100                       Vida inicial=150                        Vida inicial=80\n"
+    "Danio inicial=30                       Danio inicial=20                        Danio inicial=50\n"
+    "Agilidad inicial=20                    Agilidad inicial=10                     Agilidad inicial=40\n"
+    "Armadura inicial=20                    Armadura inicial=40                     Armadura asesino=5\n"
+    "\nTu eleccion: "
+    )
+    eleccion=verificar('numero',eleccion,3)
+    clase=eleccionClase(eleccion)
+    system('cls')
+    heroe = Protagonista(nombre, clase)
+    heroe.ActualizarStats()
+    return heroe
+
+def enter():
+    enter=input('Continuar...')
+
+def eleccionClase(clase):
+    if clase=='1':
+        clase='soldado'
+    elif clase=='2':
+        clase='tanque'
+    elif clase=='3':
+        clase='asesino'
+    print(f'Se a seleccionado correctamente la clase {clase}, mucha suerte.')
+    enter()
+    return clase
 

@@ -1,5 +1,32 @@
-from acciones import *
 from os import system
+
+def verificar(tipo, respuesta, cantidad=0):
+    verificado=False
+    while verificado==False:
+        if tipo=='y/n':
+            if (respuesta=='Y' or respuesta=='y')or(respuesta=='N' or respuesta=='n'):
+                verificado=True
+                if respuesta=='Y' or respuesta=='y':
+                    respuesta=True
+                elif respuesta=='N' or respuesta=='n':
+                    respuesta=False
+            else:
+                respuesta=input('Tu respuesta no es valida, por favor utiliza y/n o Y/N\nTu respuesta: ')
+                continue
+        elif tipo=='numero':
+            for i in range(cantidad+1):
+                if str(i) == respuesta:
+                    verificado=True
+                    break
+            else:
+                respuesta=input(f'Tu respuesta no es valida, por favor utiliza un numero del 1 al {cantidad}\nTu respuesta:  ')
+                continue
+        elif tipo=='nombre':
+            if len(respuesta)>0:
+                verificado=True
+            elif len(respuesta)==0:
+                respuesta=input('Debes introducir un nombre, sin nombre no hay heroe y sin heroe no hay juego\nIntroduce tu nombre:')
+    return respuesta
 
 class Seres:
     def __init__(self, nombre):
@@ -40,101 +67,106 @@ class Protagonista(Seres):
         self.danioAnillo=0
         self.danioArma=0
         self.danioExtra=0
+        self.nombreArmaActual=''
 
         self.armaduraArmadura=0
         self.armaduraAnillo=0
         self.armaduraExtra=0
+        self.nombreArmaduraActual=''
 
         self.agilidadExtra=0
         self.agilidadAnillo=0
         self.agilidadArma=0
         self.agilidadArmadura=0
-
+        self.nombreAnilloActual=''
         self.auxCamino=True
 
     def Equipado(self, equiparEn, nombre, danio=0, vida=0, agilidad=0, armadura=0):
         if equiparEn == "arma":
             while self.hayArmaEquipada==False:
-                self.nombreActual="Ninguna"
+                self.nombreArmaActual="Ninguna"
                 self.danioArma="0"
                 self.agilidadArma="0"
                 break
             if self.hayArmaEquipada==False:
                 self.danioArma = danio
                 self.agilidadArma = agilidad
-                self.nombreActual = nombre
+                self.nombreArmaActual = nombre
                 self.hayArmaEquipada=True
                 self.ActualizarStats()
-                print(f"Se equipo {self.nombreActual}")
+                print(f"Se equipo {self.nombreArmaActual}")
             else:
                 system('cls')
-                print(f"Arma actual: {self.nombreActual}           Nueva arma: {nombre}\n       daño: {self.danioArma}                            daño: {danio}\n    agilidad: {self.agilidadArma}                         agilidad: {agilidad}")
+                print(f"Arma actual: {self.nombreArmaActual}           Nueva arma: {nombre}\n       daño: {self.danioArma}                            daño: {danio}\n    agilidad: {self.agilidadArma}                         agilidad: {agilidad}")
                 equipar=input(" \nDesea cambiar de arma? (y/n): ")
-                if equipar == "y" or equipar == "Y":
+                equipar=verificar('y/n',equipar)
+                if equipar == True:
                     self.danioArma = danio
                     self.agilidadArma = agilidad
-                    self.nombreActual = nombre
+                    self.nombreArmaActual = nombre
                     self.ActualizarStats()
-                    print(f"Se equipo {self.nombreActual}")
-                else:
+                    print(f"Se equipo {self.nombreArmaActual}")
+                elif equipar == False:
                     print("No se cambio el arma equipada")
         elif equiparEn == "armadura":
             while self.hayArmaduraEquipada==False:
-                self.nombreActual="Ninguna"
+                self.nombreArmaduraActual="Ninguna"
                 self.armaduraArmadura="0"
                 self.agilidadArmadura="0"
                 self.vidaArmadura="0"
                 break
             if self.hayArmaduraEquipada==False:
-                self.nombreActual=nombre
+                self.nombreArmaduraActual=nombre
                 self.armaduraArmadura=armadura
                 self.agilidadArmadura=agilidad
                 self.vidaArmadura=vida
                 self.hayArmaduraEquipada=True
                 self.ActualizarStats()
-                print(f"Se equipo {self.nombreActual}")
+                print(f"Se equipo {self.nombreArmaduraActual}")
             else:
                 system('cls')
-                print(f"Armadura actual: {self.nombreActual}            Nueva armadura: {nombre}\n      Armadura: {self.armaduraArmadura}                                 Armadura: {armadura}\n      Agilidad: {self.agilidadArmadura}                                  Agilidad: {agilidad}\n       Vida: {self.vidaArmadura}                                      Vida: {vida}")
+                print(f"Armadura actual: {self.nombreArmaduraActual}            Nueva armadura: {nombre}\n      Armadura: {self.armaduraArmadura}                                 Armadura: {armadura}\n      Agilidad: {self.agilidadArmadura}                                  Agilidad: {agilidad}\n       Vida: {self.vidaArmadura}                                      Vida: {vida}")
                 equipar=input("\nDesea cambiar de armadura? (y/n): ")
-                if equipar == "y" or equipar == "Y":
+                equipar=verificar('y/n',equipar)
+                if equipar == True:
                     self.armaduraArmadura = armadura
                     self.agilidadArmadura = agilidad
                     self.vidaArmadura = vida
-                    self.nombreActual = nombre
+                    self.nombreArmaduraActual = nombre
                     self.ActualizarStats()
-                    print(f"Se equipo : {self.nombreActual}")
-                else:
+                    print(f"Se equipo : {self.nombreArmaduraActual}")
+                elif equipar == False:
                     print("No se cambio la armadura equipada")
         elif equiparEn == "anillo":
             while self.hayAnilloEquipado==False:
-                self.nombreActual="Ninguna"
+                self.nombreAnilloActual="Ninguna"
                 self.armaduraAnillo="0"
                 self.agilidadAnillo="0"
                 self.vidaAnillo="0"
                 self.danioAnillo="0"
                 break
             if self.hayAnilloEquipado==False:
-                self.nombreActual=nombre
+                self.nombreAnilloActual=nombre
                 self.armaduraAnillo=armadura
                 self.agilidadAnillo=agilidad
                 self.vidaAnillo=vida
                 self.danioAnillo=danio
                 self.hayAnilloEquipado=True
                 self.ActualizarStats()
-                print(f"Se equipo {self.nombreActual}")
+                print(f"Se equipo {self.nombreAnilloActual}")
             else:
                 system('cls')
-                print(f"Anillo actual: {self.nombreActual}              Nuevo anillo: {nombre}\n        Armadura: {self.armaduraAnillo}                               Armadura: {armadura}\n        Agilidad: {self.agilidadAnillo}                               Agilidad: {agilidad}\n          Vida: {self.vidaAnillo}                                   Vida: {vida}\n          Daño: {self.danioAnillo}                                   Daño: {danio}")
+                print(f"Anillo actual: {self.nombreAnilloActual}              Nuevo anillo: {nombre}\n        Armadura: {self.armaduraAnillo}                               Armadura: {armadura}\n        Agilidad: {self.agilidadAnillo}                               Agilidad: {agilidad}\n          Vida: {self.vidaAnillo}                                   Vida: {vida}\n          Daño: {self.danioAnillo}                                   Daño: {danio}")
                 equipar=input("\nDesea cambiar de anillo? (y/n): ")
-                if equipar == "y" or equipar == "Y":
+                equipar=verificar('y/n',equipar)
+                if equipar == True:
                     self.armaduraAnillo = armadura
                     self.agilidadAnillo = agilidad
                     self.vidaAnillo = vida
-                    self.nombreActual = nombre
+                    self.nombreAnilloActual = nombre
                     self.ActualizarStats()
-                    print(f"Se equipo {self.nombreActual}")
-                else:
+                    print(f"Se equipo {self.nombreAnilloActual}")
+                elif equipar == False:
                     print("No se cambio el anillo equipado")
 
     def UsarPocion(self):
@@ -154,7 +186,7 @@ class Protagonista(Seres):
             if vida>vidaMaxima:
                 vida = vidaMaxima
             danio=20+self.danioAnillo+self.danioArma+self.danioExtra
-            agilidad=20+self.agilidadArmadura+self.agilidadAnillo+self.agilidadArma+self.agilidadExtra
+            agilidad=10+self.agilidadArmadura+self.agilidadAnillo+self.agilidadArma+self.agilidadExtra
             if agilidad<0:
                 agilidad=0
             armadura=60+self.armaduraAnillo+self.armaduraArmadura+self.armaduraExtra
@@ -168,7 +200,7 @@ class Protagonista(Seres):
             agilidad=40+self.agilidadArmadura+self.agilidadAnillo+self.agilidadArma+self.agilidadExtra
             if agilidad<0:
                 agilidad=0
-            armadura=20+self.armaduraAnillo+self.armaduraArmadura+self.armaduraExtra
+            armadura=5+self.armaduraAnillo+self.armaduraArmadura+self.armaduraExtra
             self.Atributos(vida=vida, danio=danio, agilidad=agilidad, armadura=armadura, vidaMaxima=vidaMaxima)
         elif self.clase == "soldado":
             vidaMaxima=100+self.vidaAnillo+self.vidaArmadura+self.vidaExtra
@@ -179,10 +211,10 @@ class Protagonista(Seres):
             agilidad=20+self.agilidadArmadura+self.agilidadAnillo+self.agilidadArma+self.agilidadExtra
             if agilidad<0:
                 agilidad=0
-            armadura=40+self.armaduraAnillo+self.armaduraArmadura+self.armaduraExtra
+            armadura=20+self.armaduraAnillo+self.armaduraArmadura+self.armaduraExtra
             self.Atributos(vida=vida, danio=danio, agilidad=agilidad, armadura=armadura, vidaMaxima=vidaMaxima)
         else:
-            print("Error, no se hay clase")
+            print("Error, no hay clase")
 
 
 class Enemigo(Seres):
@@ -217,15 +249,23 @@ class Enemigo(Seres):
             vidaMaxima=80
             vida, danio, agilidad, armadura=vidaMaxima-self.vidaPerdida, 50, 25, 0
             self.Atributos(vida=vida,danio=danio,agilidad=agilidad,armadura=armadura, vidaMaxima=vidaMaxima)
-
-
+        elif self.clase == "dragon":
+            vidaMaxima=500
+            vida, danio, agilidad, armadura=vidaMaxima-self.vidaPerdida, 80, 30, 40
             self.Atributos(vida=vida,danio=danio,agilidad=agilidad,armadura=armadura, vidaMaxima=vidaMaxima)
-
+        elif self.clase == "ogroPiedra":
+            vidaMaxima=600
+            vida, danio, agilidad, armadura=vidaMaxima-self.vidaPerdida, 60, 30, 90
+            self.Atributos(vida=vida,danio=danio,agilidad=agilidad,armadura=armadura, vidaMaxima=vidaMaxima)
+        elif self.clase == "ninja":
+            vidaMaxima=300
+            vida, danio, agilidad, armadura=vidaMaxima-self.vidaPerdida, 40, 110, 20
+            self.Atributos(vida=vida,danio=danio,agilidad=agilidad,armadura=armadura, vidaMaxima=vidaMaxima)
         else:
             print("No se encuentra la clase seleccionadad")
 
 troll=['Troll de las montañas','Troll de las nieves','Troll de Twitter']
-perro=['Perrito malvado','Pluto con hambre','Firulais con rabia']           
+perro=['Perrito malvado','Pluto con hambre','Firulais con rabia']
 esqueleto=['Carlos el huesos','Esqueleto malvado','Esqueleto Hambriento']
 
 enemigosDebiles=[troll, perro, esqueleto]
@@ -233,6 +273,11 @@ enemigosDebiles=[troll, perro, esqueleto]
 
 gigante=['Gigante come hombres','Gigante de escarcha','Juan el gigante malvado']
 animal=['Oso pardo', 'Mamut', 'Pantera negra']
-mago=['Mandraque el mago', 'Veigar el mago oscuro', 'El mago oscuro']           
+mago=['Mandraque el mago', 'Veigar el mago oscuro', 'El mago oscuro']
 
 enemigosFuertes=[gigante, animal, mago]
+
+
+
+
+enemigosBoses=['Dragon Anciano', 'Ogro de roca', 'Ninja antiguo jackie chan']
