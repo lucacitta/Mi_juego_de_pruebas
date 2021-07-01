@@ -382,7 +382,7 @@ def mercader(heroe):
                     print(f'No tienes el dinero suficiente para comprar {opcion3.nombreEquipamiento}')
                     enter()
         elif eleccion=='4':
-            alcanzo==True
+            alcanzo=True
             continue
         seguir=input('Desea seguir comprando? (y/n)\nSu respuesta: ')
         seguir=verificar('y/n',seguir)
