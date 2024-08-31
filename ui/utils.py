@@ -1,4 +1,5 @@
 import pygame
+import random
 
 def draw_text(text, font, text_color, surface, x, y, bg_color=None, line_spacing=5):
     # Dividir el texto en líneas si hay saltos de línea o si es muy largo
@@ -15,3 +16,35 @@ def draw_text(text, font, text_color, surface, x, y, bg_color=None, line_spacing
 
         # Dibuja el texto en la superficie
         surface.blit(textobj, textrect)
+
+def road_choices_generator(choices_amount, session_data):
+    road_choices = []
+    roads = [
+        'fight','fight','fight','fight','fight','fight','fight',
+        'event','event','event',
+        'chest',
+        'rest','rest','rest',
+        'recharge','recharge','recharge',
+        'store','store','store'
+    ]
+    for i in range(choices_amount):
+        road_choice = 'fight' if \
+            session_data['road_choices_made'] == 0 and i == 0 else\
+            random.choice(roads)
+
+        while i != 0 and road_choice in road_choices:
+            road_choice = random.choice(roads)
+
+        road_choices.append(road_choice)
+
+    for i in range(len(road_choices)):
+        fight_types = [
+            'strong_fight',
+            'weak_fight',
+        ]
+        if road_choices[i] == 'fight':
+            road_choices[i] = random.choice(fight_types)
+
+    session_data['road_choices'] = road_choices
+
+    return session_data

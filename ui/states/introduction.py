@@ -1,6 +1,3 @@
-import pygame
-
-from elements.buttons import yes_button, no_button, continue_button
 from elements.fonts import big_font, small_font
 from elements.colors import black, white
 from utils import draw_text
@@ -11,6 +8,9 @@ def introduction(session_data):
     screen_height = screen.get_height()
     background_image = session_data['background_image']
     show_introduction = session_data['show_introduction']
+    continue_button = session_data['buttons']['continue_button']
+    yes_button = session_data['buttons']['yes_button']
+    no_button = session_data['buttons']['no_button']
 
     if show_introduction:
         screen.blit(

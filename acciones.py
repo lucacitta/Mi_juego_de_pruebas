@@ -246,6 +246,7 @@ def drop(heroe, enemigo):
 
 
 def Caminos(heroe):
+    #<---------- First part of the function moved to road_choices_generator ---------->
     creados=0
     opcion1='Nada'
     opcion2='Nada'
@@ -278,6 +279,9 @@ def Caminos(heroe):
             opcion1=opcion
         else:
             opcion2=opcion
+
+    #<---------- First part of the function moved to road_choices_generator ---------->
+
     eleccionCamino=input('Elija por cual camino desea avanzar(1/2): ')
     eleccionCamino=verificar('numero',eleccionCamino,2)
     if eleccionCamino=='1':

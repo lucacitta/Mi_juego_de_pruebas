@@ -1,10 +1,9 @@
 import pygame
 
-from elements.buttons import input_box, tank_button, assasin_button, soldier_button
 from elements.fonts import big_font, medium_font
 from elements.colors import black, white
-from utils import draw_text
 from source.seres import Protagonista
+from utils import draw_text
 
 def initialize_class_selection(session_data, character_class):
     translation_dict = {
@@ -14,20 +13,23 @@ def initialize_class_selection(session_data, character_class):
     }
 
     session_data['player_class'] = character_class
-    session_data['actual_state'] = 'introduction'
+    session_data['actual_state'] = 'path_selection'
     session_data['show_status_bar'] = True
     session_data['player_image'] = f'ui/assets/classes/{translation_dict[character_class]}.png'
-    heroe = Protagonista(
+    hero = Protagonista(
         nombre=session_data['player_name'],
         clase=character_class
     )
-    heroe.ActualizarStats()
-    session_data['heroe'] = heroe
+    session_data['hero'] = hero
 
 def class_selection(session_data):
     screen = session_data['screen']
     screen_width = screen.get_width()
     screen_height = screen.get_height()
+    input_box = session_data['input_box']
+    soldier_button = session_data['buttons']['soldier_button']
+    tank_button = session_data['buttons']['tank_button']
+    assasin_button = session_data['buttons']['assasin_button']
 
     clases = [
         {

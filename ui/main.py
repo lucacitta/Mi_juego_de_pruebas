@@ -5,9 +5,12 @@ pygame.init()
 
 from states.class_selection import class_selection
 from states.name_selection import name_selection
+from states.path_selection import path_selection
+from elements.status_bar import draw_status_bar
+from elements.buttons import load_buttons
 from states.introduction import introduction
 from states.setup import setup
-from elements.status_bar import draw_status_bar
+from states.rest import rest
 
 
 class Game():
@@ -51,8 +54,20 @@ class Game():
             self.session_data = actual_state_function(self.session_data)
 
             if self.session_data['show_status_bar']:
-                draw_status_bar(self.session_data)
-
+                if self.session_data['is_first_time']:
+                    self.session_data['is_first_time'] = False
+                    from source.seres import Protagonista
+                    hero = Protagonista(
+                        nombre=session_data['player_name'],
+                        clase='asesino'
+                    )
+                    hero.ActualizarStats()
+                    session_data['hero'] = hero
+                    session_data['hero'].vidaPerdida = 20
+                    session_data['hero'].ActualizarStats()
+                    session_data['player_image'] = f'ui/assets/classes/assasin.png'
+                    session_data['player_name'] = 'Luca'
+                self.session_data = draw_status_bar(self.session_data)
 
             # Update screen
             pygame.display.flip()
@@ -66,18 +81,26 @@ if __name__ == '__main__':
     states = {
         'introduction': introduction,
         'name_selection': name_selection,
-        'class_selection': class_selection
+        'class_selection': class_selection,
+        'path_selection': path_selection,
+
+        'rest': rest,
     }
 
     session_data = {
-        'actual_state': 'introduction',
+
+        'is_first_time': True, #for testing purposes
+
+        'actual_state': 'path_selection',
         'screen': screen,
         'background_image': background_image,
+        'buttons':load_buttons(),
         'active_buttons': [],
         'show_introduction': False,
         'text_input_active': False,
         'player_name': '',
-        'show_status_bar': False,
+        'show_status_bar': True,
+        'road_choices_made': 0,
     }
 
     game = Game(

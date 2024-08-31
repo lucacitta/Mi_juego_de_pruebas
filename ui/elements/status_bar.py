@@ -4,10 +4,9 @@ from elements.fonts import medium_font, big_font, small_medium_font
 from utils import draw_text
 
 
-
 def draw_status_bar(session_data):
     screen = session_data['screen']
-    hero = session_data['heroe']
+    hero = session_data['hero']
     screen_width = screen.get_width()
     screen_height = screen.get_height()
     status_bar_x = 0
@@ -39,12 +38,12 @@ def draw_status_bar(session_data):
     )
 
     draw_text(
-        text=f'HP: {hero.vida}/{hero.vidaMaxima}\nDaño: {hero.danio}\nArmadura: {hero.armadura}\nAgilidad: {hero.agilidad}\nPociones: {hero.pociones}/{hero.pocionesMaximas}',
-        font=medium_font,
+        text=f'HP: {hero.vida}/{hero.vidaMaxima}\nDaño: {hero.danio}\nArmadura: {hero.armadura}\nAgilidad: {hero.agilidad}\nPociones: {hero.pociones}/{hero.pocionesMaximas}\Monedas: {hero.oro}',
+        font=small_medium_font,
         text_color=(255, 255, 255),
         surface=screen,
         x=status_bar_x + 200,
-        y=status_bar_y + 60,
+        y=status_bar_y + 50,
     )
 
     equipment = [

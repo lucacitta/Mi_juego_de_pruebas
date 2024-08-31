@@ -2,8 +2,6 @@ import pygame
 
 from elements.fonts import big_font, medium_font
 from elements.colors import black, white, gray
-from elements.buttons import continue_button
-from elements.buttons import input_box
 from utils import draw_text
 
 def name_selection(session_data):
@@ -12,6 +10,8 @@ def name_selection(session_data):
     screen_height = screen.get_height()
     text_input_active = session_data['text_input_active']
     player_name = session_data['player_name']
+    input_box = session_data['buttons']['input_box']
+    continue_button = session_data['buttons']['continue_button']
 
     draw_text(
         text='Cual es tu nombre, viajero?',

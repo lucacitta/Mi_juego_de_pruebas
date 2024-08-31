@@ -57,6 +57,8 @@ input_box = Button(
     height=40,
 )
 
+
+# Class selection buttons
 tank_button = Button(
         name='tank_button',
         width=200,
@@ -77,9 +79,81 @@ assasin_button = Button(
         height=500,
         color = gray
     )
-assasin_button.action = lambda session_data: session_data.update({
-        'class': 'assasin',
-        'actual_state': 'path_selection',
-        'activate_status_bar': True
-    }
+
+
+# Path selection buttons
+strong_fight_button = Button(
+    name='strong_fight_button',
+    width=150,
+    height=150,
+    color = gray,
+    image=pygame.image.load("ui/assets/buttons/strong_fight_button.png")
 )
+
+weak_fight_button = Button(
+    name='weak_fight_button',
+    width=150,
+    height=150,
+    color = gray,
+    image=pygame.image.load("ui/assets/buttons/weak_fight_button.png")
+)
+
+event_button = Button(
+    name='event_button',
+    width=145,
+    height=145,
+    color = gray,
+    image=pygame.image.load("ui/assets/buttons/event_button.png"),
+)
+event_button.action = lambda session_data: session_data.update({'actual_state': 'name_selection'})
+
+chest_button = Button(
+    name='chest_button',
+    width=140,
+    height=140,
+    color = gray,
+    image=pygame.image.load("ui/assets/buttons/chest_button.png"),
+)
+
+rest_button = Button(
+    name='rest_button',
+    width=130,
+    height=160,
+    color = gray,
+    image=pygame.image.load("ui/assets/buttons/rest_button.png"),
+)
+rest_button.action = lambda session_data: session_data.update({'actual_state': 'rest'})
+
+recharge_button = Button(
+    name='recharge_button',
+    width=120,
+    height=150,
+    color = gray,
+    image=pygame.image.load("ui/assets/buttons/recharge_button.png"),
+)
+
+store_button = Button(
+    name='store_button',
+    width=120,
+    height=150,
+    color = gray,
+    image=pygame.image.load("ui/assets/buttons/store_button.png"),
+)
+
+def load_buttons():
+    return {
+        'yes_button': yes_button,
+        'no_button': no_button,
+        'continue_button': continue_button,
+        'input_box': input_box,
+        'tank_button': tank_button,
+        'soldier_button': soldier_button,
+        'assasin_button': assasin_button,
+        'strong_fight_button': strong_fight_button,
+        'weak_fight_button': weak_fight_button,
+        'event_button': event_button,
+        'chest_button': chest_button,
+        'rest_button': rest_button,
+        'recharge_button': recharge_button,
+        'store_button': store_button,
+    }

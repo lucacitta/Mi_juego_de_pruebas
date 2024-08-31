@@ -1,0 +1,1 @@
+agregar monedas a la status bar

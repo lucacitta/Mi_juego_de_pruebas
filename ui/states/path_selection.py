@@ -2,56 +2,68 @@ import pygame
 
 from elements.fonts import big_font, medium_font
 from elements.colors import black, white, gray
-from elements.buttons import continue_button
-from elements.buttons import input_box
-from utils import draw_text
+
+from utils import draw_text, road_choices_generator
+
+road_choices_translations = {
+    'strong_fight': 'En este camino hay\n un enemigo bastante\n fuerte.',
+    'weak_fight': 'En este camino hay\n el cual no parece\n muy poderoso',
+    'event': 'En este camino hay\n no sabes que te espera.',
+    'chest': 'Ves un cofre dorado\n en la lejanía.',
+    'rest': 'Encuentras un lugar\n seguro para descansar.',
+    'recharge': 'Encuentras un caldero\n con el cual recargar\ntus pociones',
+    'store': 'Ves lo que podria \nser un mercader errante',
+}
 
 def path_selection(session_data):
     screen = session_data['screen']
-    screen_width = screen.get_width()
     screen_height = screen.get_height()
-    text_input_active = session_data['text_input_active']
-    player_name = session_data['player_name']
+    screen_width = screen.get_width()
+    buttons = session_data['buttons']
+    road_choices = session_data.get('road_choices', [])
 
-    draw_text(
-        text='Cual es tu nombre, viajero?',
-        font=big_font,
-        text_color=black,
-        surface=screen,
-        x=screen_width // 2, 
-        y=160,
-        bg_color=white
-    )
+    if not road_choices:
+        # session_data = road_choices_generator(2, session_data)
+        session_data['road_choices'] = ['event', 'rest']
+        session_data['active_buttons'] = []
 
-    input_box.move_to(
-        x=screen_width // 2 - 140,
-        y=screen_height // 2
-    )
-    input_box.action = lambda session_data: session_data.update({'text_input_active': True})
+    button_x = screen_width // 2 - 150
+    button_y = 110
+    active_buttons = []
+    for road_choice in road_choices:
 
-    input_box_rect_color = gray if text_input_active else white
-    input_box.rect = pygame.draw.rect(
-        surface=screen,
-        color=input_box_rect_color,
-        rect = input_box.rect,
-    )
+        button_rect = pygame.draw.rect(
+            screen,
+            gray,
+            (
+                button_x - 120,
+                button_y - 30,
+                240,
+                300
+            )
+        )
 
-    text_surface = medium_font.render(player_name, True, black)
-    text_width = text_surface.get_width()
-    text_height = text_surface.get_height()
+        draw_text(
+            text=road_choices_translations[road_choice],
+            font=medium_font,
+            text_color=black,
+            surface=screen,
+            x=button_x,
+            y=button_y + 165,
+        )
 
-    text_x = input_box.x + (input_box.rect.width - text_width) // 2
-    text_y = input_box.y + (input_box.rect.height - text_height) // 2
+        button = buttons[f'{road_choice}_button']
+        button.move_to(
+            button_x - button.width // 2,
+            button_y
+        )
+        button.rect = button_rect
+        button_x += 300
 
-    screen.blit(text_surface, (text_x, text_y))
+        button.draw(screen)
 
-    continue_button.move_to(screen_width * 0.8 - continue_button.width // 2, 500)
-    screen.blit(
-        continue_button.image if player_name else continue_button.disable_image,
-        (continue_button.x, continue_button.y)
-    )
-    continue_button.action = lambda session_data: session_data.update({'actual_state': 'class_selection'})
+        active_buttons.append(button)
 
-    session_data['active_buttons'] = [input_box, continue_button] if player_name else [input_box]
+    session_data['active_buttons'] = active_buttons
 
     return session_data

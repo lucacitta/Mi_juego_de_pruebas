@@ -263,6 +263,14 @@ class Protagonista(Seres):
                     'Daño': '-'
                 }
 
+    def restore_health(self, amount=None):
+        self.vidaPerdida -= amount if amount else self.vidaPerdida
+        self.vidaRegenerada=0
+        self.ActualizarStats()
+
+    def rest(self):
+        self.restore_health()
+
 class Enemigo(Seres):
     def __init__(self, nombre, clase):
         super().__init__(nombre)
