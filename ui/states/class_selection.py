@@ -20,13 +20,14 @@ def initialize_class_selection(session_data, character_class):
         nombre=session_data['player_name'],
         clase=character_class
     )
+    hero.ActualizarStats()
     session_data['hero'] = hero
 
 def class_selection(session_data):
     screen = session_data['screen']
     screen_width = screen.get_width()
     screen_height = screen.get_height()
-    input_box = session_data['input_box']
+    input_box = session_data['buttons']['input_box']
     soldier_button = session_data['buttons']['soldier_button']
     tank_button = session_data['buttons']['tank_button']
     assasin_button = session_data['buttons']['assasin_button']

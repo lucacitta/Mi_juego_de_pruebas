@@ -48,3 +48,14 @@ def road_choices_generator(choices_amount, session_data):
     session_data['road_choices'] = road_choices
 
     return session_data
+
+def equip_and_go_back_to_path_selection(session_data):
+    equipment = session_data['tmp'].pop('equipment')
+    session_data['hero'].equip(equipment)
+    session_data['actual_state'] = 'path_selection'
+    return session_data
+
+def discard_and_go_back_to_path_selection(session_data):
+    session_data['tmp'].pop('equipment')
+    session_data['actual_state'] = 'path_selection'
+    return session_data

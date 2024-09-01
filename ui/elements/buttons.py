@@ -57,6 +57,20 @@ input_box = Button(
     height=40,
 )
 
+equip_button = Button(
+    name='equip_button',
+    width=150,
+    height=40,
+    image=pygame.image.load("ui/assets/buttons/equip_button.svg")
+)
+
+discard_button = Button(
+    name='discard_button',
+    width=150,
+    height=40,
+    image=pygame.image.load("ui/assets/buttons/discard_button.svg")
+)
+
 
 # Class selection buttons
 tank_button = Button(
@@ -105,7 +119,6 @@ event_button = Button(
     color = gray,
     image=pygame.image.load("ui/assets/buttons/event_button.png"),
 )
-event_button.action = lambda session_data: session_data.update({'actual_state': 'name_selection'})
 
 chest_button = Button(
     name='chest_button',
@@ -114,6 +127,7 @@ chest_button = Button(
     color = gray,
     image=pygame.image.load("ui/assets/buttons/chest_button.png"),
 )
+chest_button.action = lambda session_data: session_data.update({'actual_state': 'chest'})
 
 rest_button = Button(
     name='rest_button',
@@ -146,9 +160,13 @@ def load_buttons():
         'no_button': no_button,
         'continue_button': continue_button,
         'input_box': input_box,
+        'equip_button': equip_button,
+        'discard_button': discard_button,
+
         'tank_button': tank_button,
         'soldier_button': soldier_button,
         'assasin_button': assasin_button,
+
         'strong_fight_button': strong_fight_button,
         'weak_fight_button': weak_fight_button,
         'event_button': event_button,

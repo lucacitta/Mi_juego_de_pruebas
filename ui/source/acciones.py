@@ -15,22 +15,22 @@ efectos=['vida+','vida-','armadura+','armadura-','danio+', 'danio-','agilidad+',
 
 
 
-def generadorEquipamiento(heroe):
+def generate_equipment():
     try:
         lista=['espadas', 'armaduras', 'anillos']
         tipos=r.choice(lista)
-        seleccionado=r.choice(equipamientoTotal[tipos])
+        selected_equipment=r.choice(equipamientoTotal[tipos])
     except IndexError:
         try:
             lista.remove(tipos)
             tipos=r.choice(lista)
-            seleccionado=r.choice(equipamientoTotal[tipos])
+            selected_equipment=r.choice(equipamientoTotal[tipos])
         except IndexError:
             lista.remove(tipos)
             tipos=r.choice(lista)
-            seleccionado=r.choice(equipamientoTotal[tipos])
-    equipamientoTotal[tipos].remove(seleccionado)
-    return seleccionado, tipos
+            selected_equipment=r.choice(equipamientoTotal[tipos])
+    equipamientoTotal[tipos].remove(selected_equipment)
+    return selected_equipment
 
 def equipar(heroe, equipando):
     if equipando.equiparEn == "arma":
@@ -291,7 +291,7 @@ def Caminos(heroe):
     elif opcion=='evento':
         generadorEvento(heroe)
     elif opcion=='cofre':
-        seleccionado,tipos=generadorEquipamiento(heroe)
+        seleccionado,tipos=generate_equipment(heroe)
         generadorCofre(seleccionado=seleccionado,tipos=tipos, heroe=heroe)
     elif opcion=='descanso':
         print('Decides descansar junto a la hoguera, recuperando toda tu vida y poniendote de buen humor, es importante estar de buen humor')
@@ -457,7 +457,7 @@ def eventoVidaPorEquipamiento(heroe):
     eleccion=verificar('y/n',eleccion)
     if eleccion==True:
         heroe.vida-=(heroe.vida/5)
-        objeto, tipo = generadorEquipamiento(heroe)
+        objeto, tipo = generate_equipment(heroe)
         print('Realizas un corte en tu mano y se escucha un sonido extraño')
         print(f'La estatua se parte en dos y encuentras {objeto.nombreEquipamiento}')
         enter()
@@ -500,8 +500,8 @@ def eventoStats(heroe):
         print('Decides no arriesgarte a tomar una pocion que no conoces y sigues tu camino')
 
 def eventoElegirEquipamiento(heroe):
-    opcion1, tipo1=generadorEquipamiento(heroe)
-    opcion2, tipo2=generadorEquipamiento(heroe)
+    opcion1, tipo1=generate_equipment(heroe)
+    opcion2, tipo2=generate_equipment(heroe)
     print('Ves la estatua de un angel, observas que en cada una de sus manos tiene un equipamiento')
     enter()
     eleccion=input(f'En su mano izquierda ves {opcion1.nombreEquipamiento}(1) y en su mano derecha {opcion2.nombreEquipamiento}(2), cual deseas recoger? (1/2): ')

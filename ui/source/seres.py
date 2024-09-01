@@ -81,6 +81,62 @@ class Protagonista(Seres):
         self.nombreAnilloActual=''
         self.auxCamino=True
 
+        self.equiped_weapon = None
+        self.equiped_armor = None
+        self.equiped_ring = None
+
+    def equip(self, equipment):
+        setattr(self, f'equiped_{equipment.equipment_type}', equipment)
+        for attr, value in equipment.get_attributes_internal().items():
+            setattr(self, attr, value)
+        self.ActualizarStats()
+
+    def get_equipment(self, equipment_type):
+        if equipment_type == 'weapon':
+            if self.equiped_weapon:
+                return self.equiped_weapon.get_attributes_to_user()
+            return {
+                'Nombre': '-',
+                'Daño': '-',
+                'Agilidad': '-'
+            }
+        elif equipment_type == 'armor':
+            if self.equiped_armor:
+                return self.equiped_armor.get_attributes_to_user()
+            return {
+                'Nombre': '-',
+                'Armadura': '-',
+                'Agilidad': '-',
+                'Vida': '-'
+            }
+        elif equipment_type == 'ring':
+            if self.equiped_ring:
+                return self.equiped_ring.get_attributes_to_user()
+            return {
+                'Nombre': '-',
+                'Armadura': '-',
+                'Agilidad': '-',
+                'Vida': '-',
+                'Daño': '-'
+            }
+        else:
+            raise ValueError('Invalid equipment type')
+
+    def has_equipment_by_type(self, equipment_type):
+        return False if \
+            self.get_equipment(equipment_type)['Nombre'] == '-' else\
+            True
+
+    def restore_health(self, amount=None):
+        self.vidaPerdida -= amount if amount else self.vidaPerdida
+        self.vidaRegenerada=0
+        self.ActualizarStats()
+
+    def rest(self):
+        self.restore_health()
+
+
+
     def Equipado(self, equiparEn, nombre, danio=0, vida=0, agilidad=0, armadura=0):
         if equiparEn == "arma":
             while self.hayArmaEquipada==False:
@@ -215,61 +271,6 @@ class Protagonista(Seres):
             self.Atributos(vida=vida, danio=danio, agilidad=agilidad, armadura=armadura, vidaMaxima=vidaMaxima)
         else:
             print("Error, no hay clase")
-
-    def get_equipment(self, equipment_type):
-        if equipment_type == 'Arma':
-            if self.hayArmaEquipada==True:
-                return {
-                    'Nombre': self.nombreArmaActual,
-                    'Daño': self.danioArma,
-                    'Agilidad': self.agilidadArma
-                }
-            else:
-                return {
-                    'Nombre': '-',
-                    'Daño': '-',
-                    'Agilidad': '-'
-                }
-        elif equipment_type == 'Armadura':
-            if self.hayArmaduraEquipada==True:
-                return {
-                    'Nombre': self.nombreArmaduraActual,
-                    'Armadura': self.armaduraArmadura,
-                    'Agilidad': self.agilidadArmadura,
-                    'Vida': self.vidaArmadura
-                }
-            else:
-                return {
-                    'Nombre': '-',
-                    'Armadura': '-',
-                    'Agilidad': '-',
-                    'Vida': '-'
-                }
-        elif equipment_type == 'Anillo':
-            if self.hayAnilloEquipado==True:
-                return {
-                    'Nombre': self.nombreAnilloActual,
-                    'Armadura': self.armaduraAnillo,
-                    'Agilidad': self.agilidadAnillo,
-                    'Vida': self.vidaAnillo,
-                    'Daño': self.danioAnillo
-                }
-            else:
-                return {
-                    'Nombre': '-',
-                    'Armadura': '-',
-                    'Agilidad': '-',
-                    'Vida': '-',
-                    'Daño': '-'
-                }
-
-    def restore_health(self, amount=None):
-        self.vidaPerdida -= amount if amount else self.vidaPerdida
-        self.vidaRegenerada=0
-        self.ActualizarStats()
-
-    def rest(self):
-        self.restore_health()
 
 class Enemigo(Seres):
     def __init__(self, nombre, clase):

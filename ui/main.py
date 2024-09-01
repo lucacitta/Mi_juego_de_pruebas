@@ -10,7 +10,8 @@ from elements.status_bar import draw_status_bar
 from elements.buttons import load_buttons
 from states.introduction import introduction
 from states.setup import setup
-from states.rest import rest
+
+from states.paths import rest, chest
 
 
 class Game():
@@ -84,13 +85,16 @@ if __name__ == '__main__':
         'class_selection': class_selection,
         'path_selection': path_selection,
 
+        # paths
         'rest': rest,
+        'chest': chest,
     }
 
     session_data = {
 
         'is_first_time': True, #for testing purposes
 
+        # 'actual_state': 'introduction',
         'actual_state': 'path_selection',
         'screen': screen,
         'background_image': background_image,
@@ -99,8 +103,9 @@ if __name__ == '__main__':
         'show_introduction': False,
         'text_input_active': False,
         'player_name': '',
-        'show_status_bar': True,
+        'show_status_bar': True, #True for testing purposes
         'road_choices_made': 0,
+        'tmp': {},
     }
 
     game = Game(

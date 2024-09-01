@@ -16,14 +16,47 @@ class Arma(Equipamiento):
         super().__init__(nombreEquipamiento, ocupa)
         self.danio=danioArma
         self.agilidad=agilidadArma
+        self.image='weapons/sword.png'
+        self.equipment_type = 'weapon'
 
+    def get_attributes_to_user(self):
+        return {
+            'Nombre': self.nombreEquipamiento,
+            'Daño': self.danio,
+            'Agilidad': self.agilidad
+        }
+
+    def get_attributes_internal(self):
+        return {
+            'nombreArmaActual': self.nombreEquipamiento,
+            'danioArma': self.danio,
+            'agilidadArma': self.agilidad
+        }
 
 class Armor(Equipamiento):
-    def __init__(self, nombreEquipamiento, ocupa,armaduraArmor, agilidadArmor, vidaArmor):
+    def __init__(self, nombreEquipamiento, ocupa, armaduraArmor, agilidadArmor, vidaArmor):
         super().__init__(nombreEquipamiento, ocupa)
         self.armadura=armaduraArmor
         self.agilidad=agilidadArmor
         self.vida=vidaArmor
+        self.image='armors/armor.png'
+        self.equipment_type = 'armor'
+
+    def get_attributes_to_user(self):
+        return {
+            'Nombre': self.nombreEquipamiento,
+            'Armadura': self.armadura,
+            'Agilidad': self.agilidad,
+            'Vida': self.vida
+        }
+
+    def get_attributes_internal(self):
+        return {
+            'nombreArmaduraActual': self.nombreEquipamiento,
+            'armaduraArmadura': self.armadura,
+            'agilidadArmadura': self.agilidad,
+            'vidaArmadura': self.vida
+        }
 
 
 class Anillo(Equipamiento):
@@ -33,6 +66,26 @@ class Anillo(Equipamiento):
         self.vida=vidaAnillo
         self.agilidad=agilidadAnillo
         self.armadura=armaduraAnillo
+        self.image='rings/ring.png'
+        self.equipment_type = 'ring'
+
+    def get_attributes_to_user(self):
+        return {
+            'Nombre': self.nombreEquipamiento,
+            'Daño': self.danio,
+            'Vida': self.vida,
+            'Agilidad': self.agilidad,
+            'Armadura': self.armadura
+        }
+
+    def get_attributes_internal(self):
+        return {
+            'nombreAnilloActual': self.nombreEquipamiento,
+            'armaduraAnillo': self.armadura,
+            'agilidadAnillo': self.agilidad,
+            'vidaAnillo': self.vida,
+            'danioAnillo': self.danio,
+        }
 
 
 #EQUIPAMIENTO
