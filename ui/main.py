@@ -11,7 +11,7 @@ from elements.buttons import load_buttons
 from states.introduction import introduction
 from states.setup import setup
 
-from states.paths import rest, chest
+from states.paths import rest, chest, recharge
 
 
 class Game():
@@ -88,6 +88,7 @@ if __name__ == '__main__':
         # paths
         'rest': rest,
         'chest': chest,
+        'recharge': recharge,
     }
 
     session_data = {

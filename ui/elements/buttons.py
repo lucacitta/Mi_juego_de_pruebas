@@ -145,6 +145,7 @@ recharge_button = Button(
     color = gray,
     image=pygame.image.load("ui/assets/buttons/recharge_button.png"),
 )
+recharge_button.action = lambda session_data: session_data.update({'actual_state': 'recharge'})
 
 store_button = Button(
     name='store_button',

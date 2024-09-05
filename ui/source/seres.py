@@ -135,6 +135,8 @@ class Protagonista(Seres):
     def rest(self):
         self.restore_health()
 
+    def restore_potions(self):
+        self.pociones = self.pocionesMaximas
 
 
     def Equipado(self, equiparEn, nombre, danio=0, vida=0, agilidad=0, armadura=0):
