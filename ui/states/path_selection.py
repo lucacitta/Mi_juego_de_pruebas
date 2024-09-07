@@ -30,18 +30,25 @@ def path_selection(session_data):
     button_x = screen_width // 2 - 150
     button_y = 110
     active_buttons = []
+    path_choice_image = pygame.transform.scale(
+        pygame.image.load(f'ui/assets/backgrounds/path_choice.png'),
+        (260, 300)
+    )
+
     for road_choice in road_choices:
 
         button_rect = pygame.draw.rect(
             screen,
             gray,
             (
-                button_x - 120,
+                button_x - 130,
                 button_y - 30,
-                240,
+                259,
                 300
             )
         )
+
+        screen.blit(path_choice_image, (button_x - 130, button_y - 30))
 
         draw_text(
             text=road_choices_translations[road_choice],
