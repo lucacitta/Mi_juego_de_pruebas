@@ -154,14 +154,13 @@ def draw_after_fight_message(session_data, screen, screen_width, screen_height):
         pygame.image.load('ui/assets/backgrounds/vertical_message.png'),
         (300, 300)
     )
-    after_fight_bot_width = after_fight_box_image.get_width()
     screen.blit(after_fight_box_image, (after_fight_rect_x, after_fight_rect_y))
 
     gold_earned = session_data['tmp'].get('gold_earned', 0)
     texts = {
         'win': {
             'title': 'Victoria!',
-            'text': f'Has derrotado a \nj{enemy.nombre}!\n\nOro obtenido: {gold_earned}',
+            'text': f'Has derrotado a \n{enemy.nombre}!\n\nOro obtenido: {gold_earned}',
         },
         'death': {
             'title': 'Derrota...',
@@ -200,7 +199,12 @@ def draw_after_fight_message(session_data, screen, screen_width, screen_height):
         continue_button.image,
         (continue_button.x, continue_button.y)
     )
-    continue_button.action = lambda session_data: session_data.update({'actual_state': 'path_selection', 'tmp': {}})
+    continue_button.action = lambda session_data: session_data.update({
+            'actual_state': 'path_selection',
+            'tmp': {},
+            'road_choices_remaining': session_data['road_choices_remaining'] - 1
+        }
+    )
     session_data['active_buttons'] = [continue_button]
 
 def fight(session_data):

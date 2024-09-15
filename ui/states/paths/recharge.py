@@ -51,7 +51,11 @@ def recharge(session_data):
         continue_button.image,
         (continue_button.x, continue_button.y)
     )
-    continue_button.action = lambda session_data: session_data.update({'actual_state': 'path_selection'})
+    continue_button.action = lambda session_data: session_data.update({
+            'actual_state': 'path_selection',
+            'road_choices_remaining': session_data['road_choices_remaining'] - 1
+        }
+    )
     session_data['active_buttons'] = [continue_button]
 
     return session_data
