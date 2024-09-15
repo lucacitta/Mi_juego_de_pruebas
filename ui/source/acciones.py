@@ -164,61 +164,59 @@ def pelea(heroe, enemigo):
 
 
 def ataque(heroe, enemigo, atacando):
+    messages = []
     if atacando == 0:
         danioVerdadero=heroe.danio-enemigo.defensa
         crit=critico()
         if crit == 1:
-            print(f'{heroe.nombre} ataca, causando {danioVerdadero} puntos de daño')
+            messages.append(f'{heroe.nombre} ataca, causando {danioVerdadero} puntos de daño.')
             enemigo.vidaPerdida += danioVerdadero
         else:
-            print(f'{heroe.nombre}, golpea con un ataque critico, causando {danioVerdadero*2} puntos de daño')
+            messages.append(f'{heroe.nombre}, golpea con un ataque critico, causando {danioVerdadero*2} puntos de daño.')
             enemigo.vidaPerdida += heroe.danio*2
-        enemigo.ActualizarEnemigos()
         if enemigo.vida > 0:
             danioVerdadero=enemigo.danio-heroe.defensa
-            print(f'{enemigo.nombre} ataca, causando {danioVerdadero} puntos de daño')
+            messages.append(f'{enemigo.nombre} ataca, causando {danioVerdadero} puntos de daño.')
             heroe.vidaPerdida += danioVerdadero
-            heroe.ActualizarStats()
     elif atacando ==1:
         danioVerdadero=enemigo.danio-heroe.defensa
-        print(f'{enemigo.nombre} ataca, causando {danioVerdadero} puntos de daño')
+        messages.append(f'{enemigo.nombre} ataca, causando {danioVerdadero} puntos de daño.')
         heroe.vidaPerdida += danioVerdadero
-        heroe.ActualizarStats()
         if heroe.vida > 0:
             danioVerdadero=heroe.danio-enemigo.defensa
             crit=critico()
             if crit == 1:
-                print(f'{heroe.nombre} ataca, causando {danioVerdadero} puntos de daño')
+                messages.append(f'{heroe.nombre} ataca, causando {danioVerdadero} puntos de daño.')
                 enemigo.vidaPerdida += danioVerdadero
             else:
-                print(f'{heroe.nombre}, golpea con un ataque critico, causando {danioVerdadero*2} puntos de daño')
+                messages.append(f'{heroe.nombre}, golpea con un ataque critico, causando {danioVerdadero*2} puntos de daño.')
                 enemigo.vidaPerdida += danioVerdadero*2
-            enemigo.ActualizarEnemigos()
     elif atacando ==2:
         danioVerdadero=enemigo.danio-heroe.defensa
-        print(f'{enemigo.nombre} ataca, causando {danioVerdadero} puntos de daño')
+        messages.append(f'{enemigo.nombre} ataca, causando {danioVerdadero} puntos de daño.')
         heroe.vidaPerdida += danioVerdadero
-        heroe.ActualizarStats()
     elif atacando==3:
         danioVerdadero=enemigo.danio-heroe.defensa
-        print(f'{enemigo.nombre} ataca mientras intentas escapar, causando {danioVerdadero*2} puntos de daño, ya que te alcanza de espaldas')
+        messages.append(f'{enemigo.nombre} ataca mientras intentas escapar, causando {danioVerdadero*2} puntos de daño, ya que te alcanza de espaldas.')
         heroe.vidaPerdida += danioVerdadero
-        heroe.ActualizarStats()
     elif atacando==4:
         danioVerdadero=heroe.danio-enemigo.defensa
         crit=critico()
         if crit == 1:
-            print(f'{heroe.nombre} realiza un ataque extra por su agilidad, causando {danioVerdadero} puntos de daño ')
+            messages.append(f'{heroe.nombre} realiza un ataque extra por su agilidad, causando {danioVerdadero} puntos de daño .')
             enemigo.vidaPerdida += danioVerdadero
         else:
-            print(f'{heroe.nombre}, realiza un ataque extra por su agilidad y encima critico, causando {danioVerdadero*2} puntos de daño')
+            messages.append(f'{heroe.nombre}, realiza un ataque critico extra por su agilidad, causando {danioVerdadero*2} puntos de daño.')
             enemigo.vidaPerdida += danioVerdadero*2
-        enemigo.ActualizarEnemigos()
     elif atacando==5:
         danioVerdadero=enemigo.danio-heroe.defensa
-        print(f'{enemigo.nombre} realiza un ataque extra por su agilidad, causando {danioVerdadero} puntos de daño')
+        messages.append(f'{enemigo.nombre} realiza un ataque extra por su agilidad, causando {danioVerdadero} puntos de daño.')
         heroe.vidaPerdida += danioVerdadero
-        heroe.ActualizarStats()
+
+    heroe.ActualizarStats()
+    enemigo.ActualizarEnemigos()
+
+    return heroe, enemigo, messages
 
 def critico():
     prob=r.random()
@@ -240,8 +238,9 @@ def drop(heroe, enemigo):
         oroGanado=r.randrange(11,19)
     elif enemigo.clase=='mago':
         oroGanado=r.randrange(9,22)
-    heroe.oro+=oroGanado
-    print(f'Al derrotar a {enemigo.nombre}, obtubiste {oroGanado} monedas de oro, monedas totales {heroe.oro}')
+    heroe.oro += oroGanado
+
+    return oroGanado
 
 
 

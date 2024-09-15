@@ -3,15 +3,19 @@ import sys
 import pygame
 pygame.init()
 
+from elements.fonts import medium_font
+from elements.colors import black
+from utils import draw_text
+
 from states.class_selection import class_selection
 from states.name_selection import name_selection
 from states.path_selection import path_selection
 from elements.status_bar import draw_status_bar
-from elements.buttons import load_buttons
 from states.introduction import introduction
+from elements.buttons import load_buttons
 from states.setup import setup
 
-from states.paths import rest, chest, recharge
+from states.paths import rest, chest, recharge, fight
 
 
 class Game():
@@ -45,6 +49,34 @@ class Game():
                             if len(self.session_data['player_name']) < 15: 
                                 self.session_data['player_name'] += event.unicode
 
+    def _draw_choices_counter(self):
+        message_box_x = self.screen_width // 2
+        message_box_y = 5
+
+        choices_counter = self.session_data['road_choices_remaining']
+        message_image = pygame.transform.scale(
+            pygame.image.load('ui/assets/backgrounds/horizontal_message.png'),
+            (300, 30)
+        )
+        self.screen.blit(
+            message_image, 
+            (
+                message_box_x - message_image.get_width() // 2,
+                message_box_y
+            )
+        )
+
+        draw_text(
+            text=f'Choices remaining: {choices_counter}',
+            font=medium_font,
+            text_color=black,
+            surface=self.screen,
+            x=message_box_x,
+            y=message_box_y + 15,
+        )
+        
+
+
     def game_loop(self):
         while True:
             screen.blit(self.background_image, (0, 0))
@@ -64,11 +96,15 @@ class Game():
                     )
                     hero.ActualizarStats()
                     session_data['hero'] = hero
-                    session_data['hero'].vidaPerdida = 20
+                    session_data['hero'].nombre = 'Luca'
+                    session_data['hero'].armaduraArmadura = 50
                     session_data['hero'].ActualizarStats()
                     session_data['player_image'] = f'ui/assets/classes/assasin.png'
                     session_data['player_name'] = 'Luca'
                 self.session_data = draw_status_bar(self.session_data)
+
+            if self.session_data['actual_state'] == 'path_selection':
+                self._draw_choices_counter()
 
             # Update screen
             pygame.display.flip()
@@ -89,6 +125,7 @@ if __name__ == '__main__':
         'rest': rest,
         'chest': chest,
         'recharge': recharge,
+        'fight': fight,
     }
 
     session_data = {
@@ -105,7 +142,7 @@ if __name__ == '__main__':
         'text_input_active': False,
         'player_name': '',
         'show_status_bar': True, #True for testing purposes
-        'road_choices_made': 0,
+        'road_choices_remaining': 10,
         'tmp': {},
     }
 

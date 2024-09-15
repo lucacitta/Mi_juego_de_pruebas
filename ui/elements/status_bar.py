@@ -2,7 +2,7 @@ import pygame
 
 from elements.fonts import big_font, small_medium_font
 from elements.colors import black
-from utils import draw_text
+from utils import draw_text, convert_to_grayscale
 
 
 def draw_status_bar(session_data):
@@ -24,6 +24,10 @@ def draw_status_bar(session_data):
         pygame.image.load(session_data['player_image']),
         (100, 165)
     )
+
+    if hero.vida <= 0:
+        hero_image = convert_to_grayscale(hero_image)
+
     screen.blit(hero_image, (status_bar_x + 20, status_bar_y + 20))
 
     draw_text(

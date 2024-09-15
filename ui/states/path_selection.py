@@ -6,25 +6,24 @@ from elements.colors import black, white, gray
 from utils import draw_text, road_choices_generator
 
 road_choices_translations = {
-    'strong_fight': 'En este camino hay\n un enemigo bastante\n fuerte.',
-    'weak_fight': 'En este camino hay\n el cual no parece\n muy poderoso',
-    'event': 'En este camino hay\n no sabes que te espera.',
-    'chest': 'Ves un cofre dorado\n en la lejanía.',
-    'rest': 'Encuentras un lugar\n seguro para descansar.',
-    'recharge': 'Encuentras un caldero\n con el cual recargar\ntus pociones',
-    'store': 'Ves lo que podria \nser un mercader errante',
+    'strong_fight': 'En este camino hay\n un enemigo bastante\nfuerte.',
+    'weak_fight': 'En este camino hay\nun enemigo el cual no\nparece muy poderoso',
+    'event': 'En este camino hay\nno sabes que te espera.',
+    'chest': 'Ves un cofre dorado\nen la lejanía.',
+    'rest': 'Encuentras un lugar\nseguro para descansar.',
+    'recharge': 'Encuentras un caldero\ncon el cual recargar\ntus pociones',
+    'store': 'Ves lo que podria\nser un mercader errante',
 }
 
 def path_selection(session_data):
     screen = session_data['screen']
-    screen_height = screen.get_height()
     screen_width = screen.get_width()
     buttons = session_data['buttons']
     road_choices = session_data.get('road_choices', [])
 
     if not road_choices:
         # session_data = road_choices_generator(2, session_data)
-        session_data['road_choices'] = ['event', 'rest']
+        session_data['road_choices'] = ['weak_fight', 'strong_fight']
         session_data['active_buttons'] = []
 
     button_x = screen_width // 2 - 150

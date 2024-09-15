@@ -128,8 +128,7 @@ class Protagonista(Seres):
             True
 
     def restore_health(self, amount=None):
-        self.vidaPerdida -= amount if amount else self.vidaPerdida
-        self.vidaRegenerada=0
+        self.vidaPerdida -= max(amount if amount else self.vidaPerdida, 0)
         self.ActualizarStats()
 
     def rest(self):
@@ -137,6 +136,11 @@ class Protagonista(Seres):
 
     def restore_potions(self):
         self.pociones = self.pocionesMaximas
+    
+    def use_potion(self):
+        assert self.pociones > 0, 'No potions left'
+        self.pociones -= 1
+        self.restore_health(self.pocionesCuracion)
 
 
     def Equipado(self, equiparEn, nombre, danio=0, vida=0, agilidad=0, armadura=0):
@@ -227,20 +231,10 @@ class Protagonista(Seres):
                 elif equipar == False:
                     print("No se cambio el anillo equipado")
 
-    def UsarPocion(self):
-        if self.pociones == 0:
-            print('No le quedan mas pociones para utilizar')
-            return 1
-        else:
-            self.pociones-=1
-            self.vidaRegenerada += self.pocionesCuracion
-            print(f'Se uso una pocion, queda {self.pociones}')
-            return 0
-
     def ActualizarStats(self):
         if self.clase == "tanque":
             vidaMaxima=150+self.vidaAnillo+self.vidaArmadura+self.vidaExtra
-            vida=vidaMaxima+self.vidaRegenerada-self.vidaPerdida
+            vida=vidaMaxima - max(self.vidaPerdida, 0)
             if vida>vidaMaxima:
                 vida = vidaMaxima
             danio=20+self.danioAnillo+self.danioArma+self.danioExtra
@@ -251,7 +245,7 @@ class Protagonista(Seres):
             self.Atributos(vida=vida, danio=danio, agilidad=agilidad, armadura=armadura, vidaMaxima=vidaMaxima)
         elif self.clase == "asesino":
             vidaMaxima=80+self.vidaAnillo+self.vidaArmadura+self.vidaExtra
-            vida=vidaMaxima+self.vidaRegenerada-self.vidaPerdida
+            vida=vidaMaxima - max(self.vidaPerdida, 0)
             if vida>vidaMaxima:
                 vida = self.vidaMaxima
             danio=50+self.danioAnillo+self.danioArma+self.danioExtra
@@ -262,7 +256,7 @@ class Protagonista(Seres):
             self.Atributos(vida=vida, danio=danio, agilidad=agilidad, armadura=armadura, vidaMaxima=vidaMaxima)
         elif self.clase == "soldado":
             vidaMaxima=100+self.vidaAnillo+self.vidaArmadura+self.vidaExtra
-            vida=vidaMaxima+self.vidaRegenerada-self.vidaPerdida
+            vida=vidaMaxima - max(self.vidaPerdida, 0)
             if vida>vidaMaxima:
                 vida = self.vidaMaxima
             danio=30+self.danioAnillo+self.danioArma+self.danioExtra

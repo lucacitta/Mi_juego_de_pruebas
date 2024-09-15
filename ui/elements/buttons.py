@@ -1,9 +1,11 @@
 import pygame
 
-from elements.colors import gray
+from elements.colors import gray, red, green, blue
+from elements.fonts import medium_font
+from utils import launch_fight, execute_turn
 
 class Button():
-    def __init__(self, name, width, height, color=None, text=None, x=None, y=None, image=None, disable_image=None):
+    def __init__(self, name, width, height, color=None, text=None, x=None, y=None, image=None, disable_image=None, font=None):
         self.name = name
         self.width = width
         self.height = height
@@ -14,10 +16,16 @@ class Button():
         self.y = y
         self.image = pygame.transform.scale(image, (width, height)) if image else None
         self.disable_image = pygame.transform.scale(disable_image, (width, height)) if disable_image else None
+        self.font = font if font else medium_font
 
     def draw(self, screen):
         if self.image:
             screen.blit(self.image, (self.x, self.y))
+        elif self.text:
+            text = self.font.render(self.text, True, self.color)
+            text_rect = text.get_rect()
+            text_rect.center = (self.x + self.width // 2, self.y + self.height // 2)
+            screen.blit(text, text_rect)
         else:
             pygame.draw.rect(screen, self.color, (self.x, self.y, self.width, self.height))
 
@@ -103,6 +111,7 @@ strong_fight_button = Button(
     color = gray,
     image=pygame.image.load("ui/assets/buttons/strong_fight_button.png")
 )
+strong_fight_button.action = lambda session_data: launch_fight(session_data, 'strong')
 
 weak_fight_button = Button(
     name='weak_fight_button',
@@ -111,6 +120,7 @@ weak_fight_button = Button(
     color = gray,
     image=pygame.image.load("ui/assets/buttons/weak_fight_button.png")
 )
+weak_fight_button.action = lambda session_data: launch_fight(session_data, 'weak')
 
 event_button = Button(
     name='event_button',
@@ -155,6 +165,35 @@ store_button = Button(
     image=pygame.image.load("ui/assets/buttons/store_button.png"),
 )
 
+# Action buttons
+
+attack_button = Button(
+    name='attack_button',
+    width=174,
+    height=45,
+    text='Atacar',
+    color = red
+)
+attack_button.action = lambda session_data: execute_turn(session_data, 'attack')
+
+potion_button = Button(
+    name='potion_button',
+    width=174,
+    height=45,
+    text='Pocion',
+    color = green
+)
+potion_button.action = lambda session_data: execute_turn(session_data, 'potion')
+
+escape_button = Button(
+    name='escape_button',
+    width=174,
+    height=45,
+    text='Huir',
+    color = blue
+)
+escape_button.action = lambda session_data: execute_turn(session_data, 'escape')
+
 def load_buttons():
     return {
         'yes_button': yes_button,
@@ -175,4 +214,8 @@ def load_buttons():
         'rest_button': rest_button,
         'recharge_button': recharge_button,
         'store_button': store_button,
+
+        'attack_button': attack_button,
+        'potion_button': potion_button,
+        'escape_button': escape_button
     }
