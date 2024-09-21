@@ -144,7 +144,6 @@ def draw_fight_logs(session_data, screen):
             )
 
 def draw_after_fight_message(session_data, screen, screen_width, screen_height):
-    hero = session_data['hero']
     enemy = session_data['actual_enemy']
     after_fight_rect_x = screen_width * 0.02
     after_fight_rect_y = (screen_height * 0.17) - 80
