@@ -82,25 +82,25 @@ discard_button = Button(
 
 # Class selection buttons
 tank_button = Button(
-        name='tank_button',
-        width=200,
-        height=500,
-        color = gray
-    )
+    name='tank_button',
+    width=220,
+    height=350,
+    image=pygame.image.load("ui/assets/backgrounds/class_choice.png")
+)
 
 soldier_button = Button(
-        name='soldier_button',
-        width=200,
-        height=500,
-        color = gray
-    )
+    name='soldier_button',
+    width=220,
+    height=350,
+    image=pygame.image.load("ui/assets/backgrounds/class_choice.png")
+)
 
 assasin_button = Button(
-        name='assasin_button',
-        width=200,
-        height=500,
-        color = gray
-    )
+    name='assasin_button',
+    width=220,
+    height=350,
+    image=pygame.image.load("ui/assets/backgrounds/class_choice.png")
+)
 
 
 # Path selection buttons

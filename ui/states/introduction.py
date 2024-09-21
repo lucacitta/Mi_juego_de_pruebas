@@ -129,8 +129,8 @@ def introduction(session_data):
 
     draw_title(screen, screen_width)
 
-    if show_introduction:
-        session_data = draw_intro_text(screen, screen_width, screen_height, session_data)
-    else:
-        session_data = draw_skip_intro(screen, screen_width, screen_height, session_data)
+    session_data = draw_intro_text(screen, screen_width, screen_height, session_data) \
+        if show_introduction \
+        else draw_skip_intro(screen, screen_width, screen_height, session_data)
+
     return session_data
