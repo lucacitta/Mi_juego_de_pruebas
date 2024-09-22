@@ -137,7 +137,7 @@ chest_button = Button(
     color = gray,
     image=pygame.image.load("ui/assets/buttons/chest_button.png"),
 )
-chest_button.action = lambda session_data: session_data.update({'actual_state': 'chest'})
+chest_button.action = lambda session_data: session_data.update({'actual_state': 'chest','road_choices': []})
 
 rest_button = Button(
     name='rest_button',
@@ -146,7 +146,7 @@ rest_button = Button(
     color = gray,
     image=pygame.image.load("ui/assets/buttons/rest_button.png"),
 )
-rest_button.action = lambda session_data: session_data.update({'actual_state': 'rest'})
+rest_button.action = lambda session_data: session_data.update({'actual_state': 'rest','road_choices': []})
 
 recharge_button = Button(
     name='recharge_button',
@@ -155,7 +155,7 @@ recharge_button = Button(
     color = gray,
     image=pygame.image.load("ui/assets/buttons/recharge_button.png"),
 )
-recharge_button.action = lambda session_data: session_data.update({'actual_state': 'recharge'})
+recharge_button.action = lambda session_data: session_data.update({'actual_state': 'recharge','road_choices': []})
 
 store_button = Button(
     name='store_button',

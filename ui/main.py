@@ -74,8 +74,6 @@ class Game():
             x=message_box_x,
             y=message_box_y + 15,
         )
-        
-
 
     def game_loop(self):
         while True:

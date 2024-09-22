@@ -32,11 +32,11 @@ def road_choices_generator(choices_amount, session_data):
     road_choices = []
     roads = [
         'fight','fight','fight','fight','fight','fight','fight',
-        'event','event','event',
+        # 'event','event','event',
         'chest',
         'rest','rest','rest',
         'recharge','recharge','recharge',
-        'store','store','store'
+        # 'store','store','store'
     ]
     for i in range(choices_amount):
         road_choice = 'fight' if \
@@ -80,6 +80,7 @@ def launch_fight(session_data, fight_type):
     }
     session_data['actual_state'] = 'fight'
     session_data['actual_enemy'] = generadorEnemigos(fight_type_dict[fight_type])
+    session_data['road_choices'] = []
     session_data['tmp'] = {}
     return session_data
 
