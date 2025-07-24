@@ -128,10 +128,10 @@ if __name__ == '__main__':
 
     session_data = {
 
-        'is_first_time': True, #for testing purposes
+        'is_first_time': False, #for testing purposes
 
-        # 'actual_state': 'introduction',
-        'actual_state': 'path_selection',
+        'actual_state': 'introduction',
+        # 'actual_state': 'path_selection',
         'screen': screen,
         'background_image': background_image,
         'buttons':load_buttons(),
@@ -139,7 +139,7 @@ if __name__ == '__main__':
         'show_introduction': False,
         'text_input_active': False,
         'player_name': '',
-        'show_status_bar': True, #True for testing purposes
+        'show_status_bar': False, #True for testing purposes
         'road_choices_remaining': 10,
         'tmp': {},
     }

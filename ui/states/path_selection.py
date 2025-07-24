@@ -23,6 +23,7 @@ def path_selection(session_data):
 
     if not road_choices:
         session_data = road_choices_generator(2, session_data)
+        # road_choices = ['chest', 'rest']
         session_data['active_buttons'] = []
 
     button_x = screen_width // 2 - 150

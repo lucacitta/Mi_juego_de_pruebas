@@ -1,1 +1,4 @@
-agregar monedas a la status bar
+las pociones se usan siempre antes de que ataque el enemigo
+
+si queres escapar y no podes te pegan critico.
+La chance de escapar se incremente a mayor diferencia entre la agilidad.
